@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
-public class RegisterTests {
+public class RegisterTests extends TestBase{
 
     @Test
     @DisplayName("Проверка успешной регистрации пользователя с валидными данными")
@@ -18,7 +18,7 @@ public class RegisterTests {
                 .contentType(ContentType.JSON)
                 .log().uri()
              .when()
-                .post(Constants.baseUrl + "/register")
+                .post( "/register")
              .then()
                 .log().status()
                 .log().body()
@@ -36,7 +36,7 @@ public class RegisterTests {
                 .contentType(ContentType.JSON)
                 .log().uri()
             .when()
-                .post(Constants.baseUrl + "/register")
+                .post("/register")
             .then()
                 .log().status()
                 .log().body()
@@ -53,7 +53,7 @@ public class RegisterTests {
                 .contentType(ContentType.JSON)
                 .log().uri()
             .when()
-                .post(Constants.baseUrl + "/register")
+                .post( "/register")
             .then()
                 .log().status()
                 .log().body()
@@ -66,7 +66,7 @@ public class RegisterTests {
     void unSuccessfulRegisterTest() {
         given()
                 .log().uri()
-                .post(Constants.baseUrl + "/register")
+                .post("/register")
            .then()
                 .log().status()
                 .log().body()
@@ -82,7 +82,7 @@ public class RegisterTests {
                 .contentType(ContentType.JSON)
                 .log().uri()
             .when()
-                .post(Constants.baseUrl + "/register")
+                .post("/register")
             .then()
                 .log().status()
                 .log().body()
@@ -99,7 +99,7 @@ public class RegisterTests {
                 .contentType(ContentType.JSON)
                 .log().uri()
             .when()
-                .post(Constants.baseUrl + "/register")
+                .post( "/register")
             .then()
                 .log().status()
                 .log().body()
