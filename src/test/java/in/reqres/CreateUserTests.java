@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
-public class CreateUserTests {
+public class CreateUserTests extends TestBase{
 
     @Test
     @DisplayName("Проверка успешного создания пользователя")
@@ -18,7 +18,7 @@ public class CreateUserTests {
                 .contentType(ContentType.JSON)
                 .log().uri()
            .when()
-                .post(Constants.baseUrl + "/users")
+                .post("/users")
            .then()
                 .log().status()
                 .log().body()
@@ -36,7 +36,7 @@ public class CreateUserTests {
                 .contentType(ContentType.JSON)
                 .log().uri()
             .when()
-                .post(Constants.baseUrl + "/users")
+                .post( "/users")
            .then()
                 .log().status()
                 .log().body()
