@@ -13,18 +13,13 @@ public class RegisterTests {
     @Test
     @DisplayName("Проверка успешной регистрации пользователя с валидными данными")
     void successfulRegisterTest() {
-        Header apiKeyHeader = new Header("x-api-key", "reqres-free-v1");
-        String registerData = "{\"email\": \"eve.holt@reqres.in\", \"password\": \"pistol\"}";
-
         given()
-                .header(apiKeyHeader)
-                .body(registerData)
+                .header(Constants.validApiKey)
+                .body(Constants.validRegisterData)
                 .contentType(ContentType.JSON)
                 .log().uri()
-
              .when()
-                .post("https://reqres.in/api/register")
-
+                .post(Constants.baseUrl + "/register")
              .then()
                 .log().status()
                 .log().body()
@@ -36,18 +31,13 @@ public class RegisterTests {
     @Test
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае невалидного 'api key' для регистрации ")
     void invalidApiKeyTest() {
-        Header apiKeyHeader = new Header("x-api-key", "reqres-free-v11");
-        String registerData = "{\"email\": \"eve.holt@reqres.in\", \"password\": \"pistol\"}";
-
         given()
-                .header(apiKeyHeader)
-                .body(registerData)
+                .header(Constants.invalidApiKey)
+                .body(Constants.validRegisterData)
                 .contentType(ContentType.JSON)
                 .log().uri()
-
             .when()
-                .post("https://reqres.in/api/register")
-
+                .post(Constants.baseUrl + "/register")
             .then()
                 .log().status()
                 .log().body()
@@ -58,18 +48,13 @@ public class RegisterTests {
     @Test
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае невалидного 'email' для регистрации")
     void invalidEmailTest() {
-        Header apiKeyHeader = new Header("x-api-key", "reqres-free-v1");
-        String registerData = "{\"email\": \"eve111.holt@reqres.in\", \"password\": \"pistol\"}";
-
         given()
-                .header(apiKeyHeader)
-                .body(registerData)
+                .header(Constants.validApiKey)
+                .body(Constants.invalidEmailInRegisterData)
                 .contentType(ContentType.JSON)
                 .log().uri()
-
             .when()
-                .post("https://reqres.in/api/register")
-
+                .post(Constants.baseUrl + "/register")
             .then()
                 .log().status()
                 .log().body()
@@ -82,7 +67,7 @@ public class RegisterTests {
     void unSuccessfulRegisterTest() {
         given()
                 .log().uri()
-                .post("https://reqres.in/api/register")
+                .post(Constants.baseUrl + "/register")
            .then()
                 .log().status()
                 .log().body()
@@ -92,18 +77,13 @@ public class RegisterTests {
     @Test
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае отсутствия 'email' для регистрации")
     void missingEmailForRegisterTest() {
-        Header apiKeyHeader = new Header("x-api-key", "reqres-free-v1");
-        String registerData = "{\"password\": \"pistol\"}";
-
         given()
-                .header(apiKeyHeader)
-                .body(registerData)
+                .header(Constants.validApiKey)
+                .body(Constants.onlyPasswordInRegisterData)
                 .contentType(ContentType.JSON)
                 .log().uri()
-
             .when()
-                .post("https://reqres.in/api/register")
-
+                .post(Constants.baseUrl + "/register")
             .then()
                 .log().status()
                 .log().body()
@@ -114,18 +94,13 @@ public class RegisterTests {
     @Test
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае отсутствия 'password' для регистрации")
     void missingPasswordForRegisterTest() {
-        Header apiKeyHeader = new Header("x-api-key", "reqres-free-v1");
-        String registerData = "{\"email\": \"eve.holt@reqres.in\"}";
-
         given()
-                .header(apiKeyHeader)
-                .body(registerData)
+                .header(Constants.validApiKey)
+                .body(Constants.onlyEmailInRegisterData)
                 .contentType(ContentType.JSON)
                 .log().uri()
-
             .when()
-                .post("https://reqres.in/api/register")
-
+                .post(Constants.baseUrl + "/register")
             .then()
                 .log().status()
                 .log().body()

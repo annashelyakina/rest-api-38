@@ -1,7 +1,6 @@
 package in.reqres;
 
 import io.restassured.http.ContentType;
-import io.restassured.http.Header;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,18 +12,13 @@ public class CreateUserTests {
     @Test
     @DisplayName("Проверка успешного создания пользователя")
     void successfulCreateUserTest() {
-        Header apiKeyHeader = new Header("x-api-key", "reqres-free-v1");
-        String createData = "{\"name\": \"Izabel\", \"job\": \"engineer\"}";
-
-        given()
-                .header(apiKeyHeader)
-                .body(createData)
+         given()
+                .header(Constants.validApiKey)
+                .body(Constants.validCreateData)
                 .contentType(ContentType.JSON)
                 .log().uri()
-
            .when()
-                .post("https://reqres.in/api/users")
-
+                .post(Constants.baseUrl + "/users")
            .then()
                 .log().status()
                 .log().body()
@@ -36,19 +30,14 @@ public class CreateUserTests {
     @Test
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае невалидного 'api key' для создания пользователя")
     void invalidApiKeyTest() {
-        Header apiKeyHeader = new Header("x-api-key", "reqres-free-v122");
-        String createData = "{\"name\": \"Izabel\", \"job\": \"engineer\"}";
-
         given()
-                .header(apiKeyHeader)
-                .body(createData)
+                .header(Constants.invalidApiKey)
+                .body(Constants.validCreateData)
                 .contentType(ContentType.JSON)
                 .log().uri()
-
             .when()
-                .post("https://reqres.in/api/users")
-
-            .then()
+                .post(Constants.baseUrl + "/users")
+           .then()
                 .log().status()
                 .log().body()
                 .statusCode(403)
