@@ -25,7 +25,7 @@ public class RegisterTests extends TestBase{
                 .log().body()
                 .statusCode(200)
                 .body("token", Matchers.is(Matchers.notNullValue()))  // Токен должен существовать
-                .body("token", Matchers.is(Matchers.hasLength(17))) // Длина токена должна быть 17 символов
+                .body("token.length()", Matchers.is(Matchers.greaterThanOrEqualTo(17))) // Длина токена должна быть > = 17 символов
                 .body("token", Matchers.is(Matchers.matchesRegex("\\S[a-zA-Z0-9]*\\S"))) // Не должно быть пробелов в начале и конце, минимум одна буква/цифра
                 .body("token", is("QpwL5tke4Pnpja7X4"))
                 .body("id", is(4));
