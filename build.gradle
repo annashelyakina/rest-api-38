@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'io.qameta.allure' version '2.11.2'
     id "io.freefair.lombok" version "9.1.0"
 }
 
@@ -7,10 +8,25 @@ repositories {
     mavenCentral()
 }
 
+allure {
+    report{ // секция репорта
+        version.set("2.24.0")
+    }
+    adapter { // отвечает за появление папочки build/allure-results
+        aspectjWeaver.set(true) //обработка аннотации @Step
+        frameworks {
+            junit5 { // название фреймворка
+                adapterVersion.set("2.24.0") //версия интеграции фреймворка и Allure
+            }
+        }
+    }
+}
+
 dependencies {
     testImplementation(
             'io.rest-assured:rest-assured:5.5.6',
             'io.rest-assured:json-schema-validator:5.5.6',
+            'io.qameta.allure:allure-rest-assured:2.24.0',
             "org.junit.jupiter:junit-jupiter:5.10.0",
             'org.slf4j:slf4j-simple:2.0.7',
             'org.assertj:assertj-core:3.27.6'
