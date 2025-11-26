@@ -5,6 +5,7 @@ import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import models.lombok.LoginBodyLombokModel;
 import models.lombok.LoginResponseLombokModel;
+import models.lombok.MissingPasswordModel;
 import models.pojo.LoginBodyModel;
 import models.pojo.LoginResponseModel;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.LoginSpec.*;
 
 public class LoginExtendedTests {
     /*
@@ -182,5 +184,46 @@ public class LoginExtendedTests {
 
         step("Check response", ()->
             assertEquals("QpwL5tke4Pnpja7X4", response.getToken()));
+    }
+
+    @Test
+    void successfulLoginWithSpecsTest() {
+        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("cityslicka");
+
+        LoginResponseLombokModel response = step("Make request", ()->
+                given(loginRequestSpec)
+                        .body(authData)
+
+                .when()
+                        .post()
+
+                .then()
+                        .spec(loginResponseSpec)
+                        .extract().as(LoginResponseLombokModel.class));
+
+        step("Check response", ()->
+                assertEquals("QpwL5tke4Pnpja7X4", response.getToken()));
+    }
+
+    @Test
+    void missingPasswordTest() {
+        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        authData.setEmail("eve.holt@reqres.in");
+
+        MissingPasswordModel response = step("Make request", ()->
+                given(loginRequestSpec)
+                        .body(authData)
+
+                        .when()
+                        .post()
+
+                        .then()
+                        .spec(missingPasswordResponseSpec)
+                        .extract().as(MissingPasswordModel.class));
+
+        step("Check response", ()->
+                assertEquals("Missing password", response.getError()));
     }
 }
